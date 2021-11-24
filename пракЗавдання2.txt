@@ -1,0 +1,134 @@
+import random
+
+
+def input_matrix(matrix):
+
+    print("Enter size")
+    size = input_number()
+    for i in range(size):
+        a = []
+        for j in range(size):
+            k = i + 1
+            r = j + 1
+            while True:
+                try:
+                    a.append(int(input("enter [{0}][{1}] element: ".format(k, r))))
+                except ValueError:
+                    print("uncorrect type")
+                    continue
+                break
+        matrix.append(a)
+    return matrix
+
+
+def rand_matrix(matrix):
+    print("Enter size, a, b:")
+    size = input_number()
+    a = input_number()
+    b = input_number()
+    if (a>b):
+        a, b = b, a
+    matrix = [[random.randint(a, b) for j in range(size)] for i in range(size)]
+    return matrix
+
+def input_number():
+    while True:
+        try:
+            n = int(input())
+            return n
+        except ValueError:
+            print("Value should be int")
+            continue
+
+
+def print_matrix(arr):
+    s = len(arr)
+    for i in range(s):
+        for j in range(s):
+            print(" ", arr[i][j], end=" ")
+        print()
+
+
+def sort_matrix(arr):
+    print('unsorted matrix')
+    s = len(arr)
+    print_matrix(arr)
+    odnovum = []
+    for i in range(s):
+        odnovum += list(arr[i])
+    sorts = 0
+    length = len(odnovum)
+    for i in range(0, length):
+        for j in range(0, length - i - 1):
+            if odnovum[j] > odnovum[j + 1]:
+                temp = odnovum[j]
+                odnovum[j] = odnovum[j + 1]
+                odnovum[j + 1] = temp
+                sorts += 1
+    print('ксть сортів', sorts)
+
+    dvovum_sorted = []
+    dvovum_sorted = [odnovum[i:i + s] for i in range(0, s**2, s)]
+    print_matrix(dvovum_sorted)
+    return odnovum
+
+
+def binar_search(a, value):
+    sort_matrix(a)
+    mid = len(a) // 2
+    low = 0
+    high = len(a) - 1
+
+    while a[mid] != value and low <= high:
+        if value > a[mid]:
+            low = mid + 1
+        else:
+            high = mid - 1
+        mid = (low + high) // 2
+
+    i = mid // int(len(a) ** (0.5))
+    j = mid % int(len(a) ** (0.5))
+    if low > high:
+        print("No value")
+    else:
+        print("ID =", i+1, j+1)
+
+
+def menu():
+    array = []
+    while True:
+        try:
+            print(
+                "1 - create matrix,inputing elements \n2 - create randome matrix in your diapazone \n3 - show matrix  \n4- binary search\nexit - exit the program ")
+            Choose = input()
+            if (Choose == '1'):
+                array = input_matrix(array)
+                continue
+            elif (Choose == '2'):
+                array = rand_matrix(array)
+                continue
+            elif (Choose == '3'):
+                if (array == []):
+                    print("Firstly, fill matrix")
+                    continue
+                print_matrix(array)
+                continue
+            elif (Choose == '4'):
+                if (array == []):
+                    print("Firstly, fill matrix")
+                    continue
+                num = int(input('input number to find '))
+                if (array == sort_matrix(array)):
+                    binar_search(array, num)
+                continue
+            elif (Choose == 'exit'):
+                break
+            elif (Choose != 'exit'):
+                print("Choose 1,2,3 or exit")
+                continue
+        except Exception:
+            continue
+        break
+
+
+menu()
